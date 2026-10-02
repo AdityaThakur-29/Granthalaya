@@ -93,12 +93,12 @@ export function Catalog() {
   };
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-5 sm:space-y-6">
       {/* Header section */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-slate-200/80 pb-4 sm:pb-5">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
               Library Catalog
             </h1>
             <span className="text-xs bg-blue-50 text-blue-700 font-semibold px-2.5 py-0.5 rounded-full border border-blue-200">
@@ -111,10 +111,10 @@ export function Catalog() {
         </div>
 
         {/* Quick stat */}
-        <div className="flex items-center gap-3">
-          <div className="text-right">
-            <span className="text-xs text-slate-500 font-medium">Currently Available</span>
-            <p className="text-lg font-bold text-emerald-600">
+        <div className="flex items-center justify-between sm:justify-end gap-3 pt-1 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+          <div className="text-left sm:text-right">
+            <span className="text-[11px] sm:text-xs text-slate-500 font-medium">Currently In-Shelf</span>
+            <p className="text-base sm:text-lg font-bold text-emerald-600">
               {books.reduce((acc, b) => acc + (b.availableCopies || 0), 0)} Copies
             </p>
           </div>
@@ -122,25 +122,25 @@ export function Catalog() {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white p-3.5 rounded-xl border border-slate-200/80 shadow-2xs">
-        <div className="relative flex-1 min-w-[280px]">
+      <div className="flex flex-col gap-3 bg-white p-3 sm:p-3.5 rounded-xl border border-slate-200/80 shadow-2xs">
+        <div className="relative w-full">
           <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <Input
             placeholder="Search by title, author, or ISBN..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9 h-9 text-xs bg-slate-50/50 border-slate-200 focus:bg-white"
+            className="pl-9 h-10 sm:h-9 text-xs bg-slate-50/50 border-slate-200 focus:bg-white"
           />
         </div>
 
         {/* Category Pills & Availability */}
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="flex items-center overflow-x-auto gap-1.5 py-1">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+          <div className="flex items-center overflow-x-auto gap-1.5 py-1 scrollbar-none max-w-full">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`text-xs px-2.5 py-1 rounded-lg border font-medium capitalize transition-colors cursor-pointer shrink-0 ${
+                className={`text-xs px-2.5 py-1.5 rounded-lg border font-medium capitalize transition-colors cursor-pointer shrink-0 min-h-[34px] flex items-center ${
                   selectedCategory === cat
                     ? "bg-blue-600 text-white border-blue-600 shadow-2xs"
                     : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
@@ -155,7 +155,7 @@ export function Catalog() {
             variant={availableOnly ? "default" : "outline"}
             size="sm"
             onClick={() => setAvailableOnly(!availableOnly)}
-            className="text-xs h-8 border-slate-200 cursor-pointer"
+            className="text-xs h-9 sm:h-8 border-slate-200 cursor-pointer shrink-0 w-full sm:w-auto"
           >
             {availableOnly ? "Showing Available Only" : "Show All Statuses"}
           </Button>

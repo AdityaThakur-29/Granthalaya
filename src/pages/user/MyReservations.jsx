@@ -62,12 +62,12 @@ export function MyReservations() {
   });
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-5 sm:space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-slate-200/80 pb-4 sm:pb-5">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
               My Reservations
             </h1>
             <span className="text-xs bg-amber-50 text-amber-700 font-semibold px-2.5 py-0.5 rounded-full border border-amber-200">
@@ -81,19 +81,19 @@ export function MyReservations() {
 
         <Link
           to="/catalog"
-          className="inline-flex items-center text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white h-8 px-3 rounded-lg transition-colors cursor-pointer"
+          className="inline-flex items-center justify-center text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white h-9 sm:h-8 px-3 rounded-lg transition-colors cursor-pointer w-full sm:w-auto"
         >
           <BookOpen className="w-3.5 h-3.5 mr-1.5" /> Browse More Books
         </Link>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
+      <div className="flex items-center gap-2 border-b border-slate-200 pb-3 overflow-x-auto scrollbar-none max-w-full">
         {["all", "pending", "approved", "cancelled"].map((st) => (
           <button
             key={st}
             onClick={() => setStatusFilter(st)}
-            className={`text-xs px-3 py-1.5 rounded-lg font-medium capitalize transition-colors cursor-pointer ${
+            className={`text-xs px-3 py-1.5 rounded-lg font-medium capitalize transition-colors cursor-pointer shrink-0 min-h-[32px] ${
               statusFilter === st
                 ? "bg-slate-900 text-white font-semibold shadow-2xs"
                 : "text-slate-600 hover:bg-slate-100"
@@ -115,8 +115,9 @@ export function MyReservations() {
         />
       ) : (
         <div className="bg-white rounded-xl border border-slate-200/90 shadow-2xs overflow-hidden">
-          <Table>
-            <TableHeader className="bg-slate-50/80">
+          <div className="overflow-x-auto w-full">
+            <Table className="min-w-[640px]">
+              <TableHeader className="bg-slate-50/80">
               <TableRow>
                 <TableHead className="text-xs font-semibold text-slate-600">
                   Book Details
@@ -198,6 +199,7 @@ export function MyReservations() {
               })}
             </TableBody>
           </Table>
+          </div>
         </div>
       )}
 

@@ -11,15 +11,19 @@ import {
   UserCheck,
   Shield,
   User,
-  Sparkles,
-  ExternalLink,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
-export function AppSidebar({ role, onRoleChange, pendingReservationsCount = 0 }) {
+export function AppSidebar({
+  role,
+  onRoleChange,
+  pendingReservationsCount = 0,
+  isOpen = false,
+  onClose = () => {},
+}) {
   const navigate = useNavigate();
 
   const userNav = [
@@ -68,8 +72,7 @@ export function AppSidebar({ role, onRoleChange, pendingReservationsCount = 0 })
     {
       name: "Reservation Desk",
       to: "/reservations",
-      icon: CalendarClock,
-      badge: pendingReservationsCount > 0 ? pendingReservationsCount : null,
+      icon: pendingReservationsCount > 0 ? pendingReservationsCount : null,
       badgeVariant: "amber",
     },
     {
@@ -89,27 +92,43 @@ export function AppSidebar({ role, onRoleChange, pendingReservationsCount = 0 })
     } else {
       navigate("/catalog");
     }
+    onClose();
   };
 
-  return (
-    <aside className="w-64 bg-white border-r border-slate-200/90 flex flex-col h-screen shrink-0 select-none">
+  const handleLinkClick = () => {
+    onClose();
+  };
+
+  const sidebarContent = (
+    <div className="flex flex-col h-full bg-white select-none">
       {/* Brand Header */}
-      <div className="p-5 flex items-center gap-3 border-b border-slate-100">
-        <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-xs">
-          <BookOpen className="w-5 h-5" />
+      <div className="p-4 sm:p-5 flex items-center justify-between border-b border-slate-100">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-xs">
+            <BookOpen className="w-5 h-5" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h1 className="text-sm font-bold text-slate-900 tracking-tight leading-tight truncate">
+              Granthalaya
+            </h1>
+            <p className="text-[11px] text-slate-500 font-medium">
+              Digital Library System
+            </p>
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <h1 className="text-sm font-bold text-slate-900 tracking-tight leading-tight truncate">
-            Granthalaya
-          </h1>
-          <p className="text-[11px] text-slate-500 font-medium">
-            Local Library Digital System
-          </p>
-        </div>
+
+        {/* Mobile Close Button */}
+        <button
+          onClick={onClose}
+          className="md:hidden p-2 -mr-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
+          aria-label="Close menu"
+        >
+          <X className="w-5 h-5" />
+        </button>
       </div>
 
-      {/* Role Switcher Pill */}
-      <div className="p-3 mx-3 my-2 bg-slate-50 border border-slate-200/80 rounded-xl flex items-center justify-between">
+      {/* Role Switcher Card */}
+      <div className="p-3 mx-3 my-2.5 bg-slate-50 border border-slate-200/80 rounded-xl flex items-center justify-between">
         <div className="flex items-center gap-2">
           {role === "librarian" ? (
             <Shield className="w-4 h-4 text-blue-600" />
@@ -129,7 +148,7 @@ export function AppSidebar({ role, onRoleChange, pendingReservationsCount = 0 })
           size="xs"
           variant="outline"
           onClick={handleRoleToggle}
-          className="text-[11px] h-7 px-2.5 bg-white hover:bg-slate-100 border-slate-200 font-medium cursor-pointer shadow-2xs"
+          className="text-[11px] min-h-[32px] px-3 bg-white hover:bg-slate-100 border-slate-200 font-medium cursor-pointer shadow-2xs"
         >
           Switch
         </Button>
@@ -142,16 +161,17 @@ export function AppSidebar({ role, onRoleChange, pendingReservationsCount = 0 })
           <div className="px-3 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
             Reader Services
           </div>
-          <nav className="space-y-0.5">
+          <nav className="space-y-1">
             {userNav.map((item) => {
               const Icon = item.icon;
               return (
                 <NavLink
                   key={item.to}
                   to={item.to}
+                  onClick={handleLinkClick}
                   className={({ isActive }) =>
                     cn(
-                      "flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg transition-colors group",
+                      "flex items-center justify-between px-3 py-2.5 text-xs font-medium rounded-lg transition-colors group min-h-[40px]",
                       isActive
                         ? "bg-blue-50 text-blue-700 font-semibold"
                         : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
@@ -180,16 +200,17 @@ export function AppSidebar({ role, onRoleChange, pendingReservationsCount = 0 })
               <div className="px-3 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                 Management
               </div>
-              <nav className="space-y-0.5">
+              <nav className="space-y-1">
                 {librarianNavManagement.map((item) => {
                   const Icon = item.icon;
                   return (
                     <NavLink
                       key={item.to}
                       to={item.to}
+                      onClick={handleLinkClick}
                       className={({ isActive }) =>
                         cn(
-                          "flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg transition-colors group",
+                          "flex items-center justify-between px-3 py-2.5 text-xs font-medium rounded-lg transition-colors group min-h-[40px]",
                           isActive
                             ? "bg-blue-50 text-blue-700 font-semibold"
                             : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
@@ -215,16 +236,17 @@ export function AppSidebar({ role, onRoleChange, pendingReservationsCount = 0 })
               <div className="px-3 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                 Operations
               </div>
-              <nav className="space-y-0.5">
+              <nav className="space-y-1">
                 {librarianNavOperations.map((item) => {
                   const Icon = item.icon;
                   return (
                     <NavLink
                       key={item.to}
                       to={item.to}
+                      onClick={handleLinkClick}
                       className={({ isActive }) =>
                         cn(
-                          "flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg transition-colors group",
+                          "flex items-center justify-between px-3 py-2.5 text-xs font-medium rounded-lg transition-colors group min-h-[40px]",
                           isActive
                             ? "bg-blue-50 text-blue-700 font-semibold"
                             : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
@@ -238,7 +260,7 @@ export function AppSidebar({ role, onRoleChange, pendingReservationsCount = 0 })
                       {item.badge && (
                         <span
                           className={cn(
-                            "text-[10px] font-semibold px-1.5 py-0.2 rounded-full border",
+                            "text-[10px] font-semibold px-2 py-0.5 rounded-full border",
                             item.badgeVariant === "amber"
                               ? "bg-amber-100 text-amber-800 border-amber-200"
                               : "bg-blue-100 text-blue-800 border-blue-200"
@@ -255,7 +277,7 @@ export function AppSidebar({ role, onRoleChange, pendingReservationsCount = 0 })
           </>
         )}
 
-        {/* Quick Kiosk link for reader mode too */}
+        {/* Quick Kiosk link for reader mode */}
         {role === "user" && (
           <div>
             <div className="px-3 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
@@ -263,9 +285,10 @@ export function AppSidebar({ role, onRoleChange, pendingReservationsCount = 0 })
             </div>
             <NavLink
               to="/assisted"
+              onClick={handleLinkClick}
               className={({ isActive }) =>
                 cn(
-                  "flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg transition-colors group",
+                  "flex items-center justify-between px-3 py-2.5 text-xs font-medium rounded-lg transition-colors group min-h-[40px]",
                   isActive
                     ? "bg-blue-50 text-blue-700 font-semibold"
                     : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
@@ -294,6 +317,31 @@ export function AppSidebar({ role, onRoleChange, pendingReservationsCount = 0 })
           Designed for Indian Municipal & District Public Libraries.
         </p>
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Persistent Sidebar */}
+      <aside className="hidden md:flex w-64 border-r border-slate-200/90 flex-col h-screen shrink-0">
+        {sidebarContent}
+      </aside>
+
+      {/* Mobile Sliding Drawer & Backdrop */}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 md:hidden flex">
+          {/* Backdrop overlay */}
+          <div
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity animate-in fade-in duration-200"
+            onClick={onClose}
+          />
+
+          {/* Drawer sheet */}
+          <div className="relative w-72 max-w-[85vw] h-full shadow-2xl z-10 animate-in slide-in-from-left duration-200">
+            {sidebarContent}
+          </div>
+        </div>
+      )}
+    </>
   );
 }

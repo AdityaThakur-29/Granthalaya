@@ -56,11 +56,11 @@ export function Dashboard() {
   const pendingQueue = reservations.filter((r) => r.status === "pending").slice(0, 5);
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-7">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-5 sm:space-y-6">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-slate-200/80 pb-4 sm:pb-5">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
             Librarian Command Dashboard
           </h1>
           <p className="text-xs text-slate-500 mt-1">
@@ -69,31 +69,34 @@ export function Dashboard() {
         </div>
 
         {/* Quick action buttons */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="grid grid-cols-3 gap-2 w-full sm:flex sm:w-auto">
           <Link
             to="/transactions"
-            className="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium h-8 px-3 rounded-lg transition-colors cursor-pointer"
+            className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium h-9 sm:h-8 px-2 sm:px-3 rounded-lg transition-colors cursor-pointer text-center"
           >
-            <Repeat className="w-3.5 h-3.5 mr-1.5" /> Issue / Return
+            <Repeat className="w-3.5 h-3.5 mr-1 shrink-0" />
+            <span className="truncate">Issue / Return</span>
           </Link>
           <Link
             to="/books"
-            className="inline-flex items-center text-xs font-medium border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 h-8 px-3 rounded-lg transition-colors cursor-pointer"
+            className="inline-flex items-center justify-center text-xs font-medium border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 h-9 sm:h-8 px-2 sm:px-3 rounded-lg transition-colors cursor-pointer text-center"
           >
-            <Plus className="w-3.5 h-3.5 mr-1" /> Add Book
+            <Plus className="w-3.5 h-3.5 mr-1 shrink-0" />
+            <span className="truncate">Add Book</span>
           </Link>
           <Link
             to="/assisted"
-            className="inline-flex items-center text-xs font-medium border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 h-8 px-3 rounded-lg transition-colors cursor-pointer"
+            className="inline-flex items-center justify-center text-xs font-medium border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 h-9 sm:h-8 px-2 sm:px-3 rounded-lg transition-colors cursor-pointer text-center"
           >
-            <UserCheck className="w-3.5 h-3.5 mr-1" /> Walk-in Kiosk
+            <UserCheck className="w-3.5 h-3.5 mr-1 shrink-0" />
+            <span className="truncate">Kiosk</span>
           </Link>
         </div>
       </div>
 
       {/* Overdue Warning Alert Banner if any overdue */}
       {overdueTxns.length > 0 && (
-        <div className="bg-rose-50 border border-rose-200 rounded-xl p-4 flex items-center justify-between">
+        <div className="bg-rose-50 border border-rose-200 rounded-xl p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
               <AlertTriangle className="w-4 h-4" />
@@ -109,7 +112,7 @@ export function Dashboard() {
           </div>
           <Link
             to="/transactions"
-            className="inline-flex items-center text-xs font-medium bg-rose-600 hover:bg-rose-700 text-white h-7 px-3 rounded-md transition-colors cursor-pointer"
+            className="inline-flex items-center justify-center text-xs font-medium bg-rose-600 hover:bg-rose-700 text-white h-8 sm:h-7 px-3 rounded-md transition-colors cursor-pointer w-full sm:w-auto shrink-0"
           >
             Review Overdues
           </Link>
@@ -117,7 +120,7 @@ export function Dashboard() {
       )}
 
       {/* KPI Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
         <StatCard
           title="Catalog Titles"
           value={totalTitles}
@@ -188,46 +191,48 @@ export function Dashboard() {
             </Link>
           </CardHeader>
           <CardContent className="p-0">
-            <Table>
-              <TableHeader className="bg-slate-50/70">
-                <TableRow>
-                  <TableHead className="text-[11px] font-semibold text-slate-500">Book</TableHead>
-                  <TableHead className="text-[11px] font-semibold text-slate-500">Member</TableHead>
-                  <TableHead className="text-[11px] font-semibold text-slate-500">Due Date</TableHead>
-                  <TableHead className="text-[11px] font-semibold text-slate-500">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {recentTransactions.map((txn) => {
-                  const book = books.find((b) => b.id === txn.bookId);
-                  const member = members.find((m) => m.id === txn.memberId);
-                  const overdue = txn.status === "active" && isOverdue(txn.dueDate);
+            <div className="overflow-x-auto w-full">
+              <Table className="min-w-[480px]">
+                <TableHeader className="bg-slate-50/70">
+                  <TableRow>
+                    <TableHead className="text-[11px] font-semibold text-slate-500">Book</TableHead>
+                    <TableHead className="text-[11px] font-semibold text-slate-500">Member</TableHead>
+                    <TableHead className="text-[11px] font-semibold text-slate-500">Due Date</TableHead>
+                    <TableHead className="text-[11px] font-semibold text-slate-500">Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {recentTransactions.map((txn) => {
+                    const book = books.find((b) => b.id === txn.bookId);
+                    const member = members.find((m) => m.id === txn.memberId);
+                    const overdue = txn.status === "active" && isOverdue(txn.dueDate);
 
-                  return (
-                    <TableRow key={txn.id} className="hover:bg-slate-50/60">
-                      <TableCell className="py-2.5">
-                        <p className="text-xs font-semibold text-slate-800 truncate max-w-[170px]">
-                          {book ? book.title : "Book"}
-                        </p>
-                        <p className="text-[10px] text-slate-400 capitalize">{txn.type}</p>
-                      </TableCell>
-                      <TableCell className="text-xs text-slate-700 py-2.5">
-                        {member ? member.name : "Member"}
-                      </TableCell>
-                      <TableCell className="text-xs text-slate-600 py-2.5">
-                        {formatDate(txn.dueDate)}
-                      </TableCell>
-                      <TableCell className="py-2.5">
-                        <StatusBadge
-                          status={overdue ? "overdue" : txn.status}
-                          label={overdue ? "Overdue" : txn.status}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+                    return (
+                      <TableRow key={txn.id} className="hover:bg-slate-50/60">
+                        <TableCell className="py-2.5">
+                          <p className="text-xs font-semibold text-slate-800 truncate max-w-[170px]">
+                            {book ? book.title : "Book"}
+                          </p>
+                          <p className="text-[10px] text-slate-400 capitalize">{txn.type}</p>
+                        </TableCell>
+                        <TableCell className="text-xs text-slate-700 py-2.5">
+                          {member ? member.name : "Member"}
+                        </TableCell>
+                        <TableCell className="text-xs text-slate-600 py-2.5">
+                          {formatDate(txn.dueDate)}
+                        </TableCell>
+                        <TableCell className="py-2.5">
+                          <StatusBadge
+                            status={overdue ? "overdue" : txn.status}
+                            label={overdue ? "Overdue" : txn.status}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
 
@@ -250,49 +255,51 @@ export function Dashboard() {
                 No pending holds in queue. All clear!
               </div>
             ) : (
-              <Table>
-                <TableHeader className="bg-slate-50/70">
-                  <TableRow>
-                    <TableHead className="text-[11px] font-semibold text-slate-500">Book</TableHead>
-                    <TableHead className="text-[11px] font-semibold text-slate-500">Requester</TableHead>
-                    <TableHead className="text-[11px] font-semibold text-slate-500">Requested</TableHead>
-                    <TableHead className="text-[11px] font-semibold text-slate-500 text-right">Action</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {pendingQueue.map((r) => {
-                    const book = books.find((b) => b.id === r.bookId);
-                    const member = members.find((m) => m.id === r.memberId);
+              <div className="overflow-x-auto w-full">
+                <Table className="min-w-[480px]">
+                  <TableHeader className="bg-slate-50/70">
+                    <TableRow>
+                      <TableHead className="text-[11px] font-semibold text-slate-500">Book</TableHead>
+                      <TableHead className="text-[11px] font-semibold text-slate-500">Requester</TableHead>
+                      <TableHead className="text-[11px] font-semibold text-slate-500">Requested</TableHead>
+                      <TableHead className="text-[11px] font-semibold text-slate-500 text-right">Action</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {pendingQueue.map((r) => {
+                      const book = books.find((b) => b.id === r.bookId);
+                      const member = members.find((m) => m.id === r.memberId);
 
-                    return (
-                      <TableRow key={r.id} className="hover:bg-slate-50/60">
-                        <TableCell className="py-2.5">
-                          <p className="text-xs font-semibold text-slate-800 truncate max-w-[170px]">
-                            {book ? book.title : "Book"}
-                          </p>
-                          <p className="text-[10px] text-slate-400">
-                            {book ? `${book.availableCopies} available` : ""}
-                          </p>
-                        </TableCell>
-                        <TableCell className="text-xs text-slate-700 py-2.5">
-                          {r.visitorName || (member ? member.name : "Member")}
-                        </TableCell>
-                        <TableCell className="text-xs text-slate-600 py-2.5">
-                          {formatDate(r.reservedAt)}
-                        </TableCell>
-                        <TableCell className="text-right py-2.5">
-                          <Link
-                            to="/reservations"
-                            className="inline-flex items-center text-xs font-medium border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 h-7 px-2.5 rounded-md transition-colors cursor-pointer"
-                          >
-                            Review
-                          </Link>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
+                      return (
+                        <TableRow key={r.id} className="hover:bg-slate-50/60">
+                          <TableCell className="py-2.5">
+                            <p className="text-xs font-semibold text-slate-800 truncate max-w-[170px]">
+                              {book ? book.title : "Book"}
+                            </p>
+                            <p className="text-[10px] text-slate-400">
+                              {book ? `${book.availableCopies} available` : ""}
+                            </p>
+                          </TableCell>
+                          <TableCell className="text-xs text-slate-700 py-2.5">
+                            {r.visitorName || (member ? member.name : "Member")}
+                          </TableCell>
+                          <TableCell className="text-xs text-slate-600 py-2.5">
+                            {formatDate(r.reservedAt)}
+                          </TableCell>
+                          <TableCell className="text-right py-2.5">
+                            <Link
+                              to="/reservations"
+                              className="inline-flex items-center text-xs font-medium border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 h-7 px-2.5 rounded-md transition-colors cursor-pointer"
+                            >
+                              Review
+                            </Link>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
             )}
           </CardContent>
         </Card>

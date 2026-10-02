@@ -28,8 +28,11 @@ import { Transactions } from "@/pages/librarian/Transactions";
 import { Reservations } from "@/pages/librarian/Reservations";
 import { Assisted } from "@/pages/librarian/Assisted";
 
+import { MobileBottomNav } from "@/components/mobile-bottom-nav";
+
 function AppLayout({ role, onRoleChange, onDataReset, refreshTrigger }) {
   const [pendingCount, setPendingCount] = useState(0);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,24 +48,27 @@ function AppLayout({ role, onRoleChange, onDataReset, refreshTrigger }) {
 
   return (
     <div className="flex h-screen w-full bg-slate-50/60 overflow-hidden font-sans text-slate-900 antialiased">
-      {/* Sidebar */}
+      {/* Sidebar (Desktop + Mobile Drawer) */}
       <AppSidebar
         role={role}
         onRoleChange={onRoleChange}
         pendingReservationsCount={pendingCount}
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
       />
 
       {/* Main Layout Area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
         {/* Top Header */}
         <AppHeader
           role={role}
           onDataReset={onDataReset}
           onRoleToggle={handleRoleToggle}
+          onMenuClick={() => setIsMobileMenuOpen(true)}
         />
 
-        {/* Scrollable Page Body */}
-        <main className="flex-1 overflow-y-auto">
+        {/* Scrollable Page Body with padding bottom for mobile nav bar */}
+        <main className="flex-1 overflow-y-auto pb-16 md:pb-6">
           <Routes>
             {/* Default Route */}
             <Route
@@ -89,6 +95,9 @@ function AppLayout({ role, onRoleChange, onDataReset, refreshTrigger }) {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
+
+        {/* Mobile Bottom Navigation Bar */}
+        <MobileBottomNav role={role} pendingCount={pendingCount} />
       </div>
 
       <Toaster position="top-right" richColors />

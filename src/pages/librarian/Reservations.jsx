@@ -78,12 +78,12 @@ export function Reservations() {
   });
 
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-5 sm:space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 border-b border-slate-200/80 pb-4 sm:pb-5">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
               Reservation Approval Desk
             </h1>
             <span className="text-xs bg-amber-50 text-amber-700 font-semibold px-2.5 py-0.5 rounded-full border border-amber-200">
@@ -97,7 +97,7 @@ export function Reservations() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
+      <div className="flex items-center gap-2 border-b border-slate-200 pb-3 overflow-x-auto scrollbar-none max-w-full">
         {[
           { id: "pending", label: "Pending Approvals" },
           { id: "approved", label: "Approved / Ready" },
@@ -107,7 +107,7 @@ export function Reservations() {
           <button
             key={tab.id}
             onClick={() => setStatusFilter(tab.id)}
-            className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer ${
+            className={`text-xs px-2.5 sm:px-3 py-1.5 rounded-lg font-medium transition-colors cursor-pointer shrink-0 min-h-[32px] ${
               statusFilter === tab.id
                 ? "bg-slate-900 text-white font-semibold shadow-2xs"
                 : "text-slate-600 hover:bg-slate-100"
@@ -129,8 +129,9 @@ export function Reservations() {
         />
       ) : (
         <div className="bg-white rounded-xl border border-slate-200/90 shadow-2xs overflow-hidden">
-          <Table>
-            <TableHeader className="bg-slate-50/80">
+          <div className="overflow-x-auto w-full">
+            <Table className="min-w-[650px]">
+              <TableHeader className="bg-slate-50/80">
               <TableRow>
                 <TableHead className="text-xs font-semibold text-slate-600">
                   Requested Book
@@ -244,6 +245,7 @@ export function Reservations() {
               })}
             </TableBody>
           </Table>
+          </div>
         </div>
       )}
     </div>

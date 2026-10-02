@@ -106,7 +106,7 @@ export function BookDetail() {
   };
 
   return (
-    <div className="p-8 max-w-5xl mx-auto space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto space-y-5 sm:space-y-6">
       {/* Back button */}
       <div>
         <Link
@@ -119,8 +119,8 @@ export function BookDetail() {
 
       {/* Main Detail Header Card */}
       <Card className="border border-slate-200/90 bg-white shadow-xs overflow-hidden">
-        <CardContent className="p-8">
-          <div className="flex flex-col md:flex-row gap-8 items-start">
+        <CardContent className="p-5 sm:p-8">
+          <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-center sm:items-start">
             {/* Spine representation */}
             <div
               className="w-36 h-52 rounded-xl shrink-0 flex flex-col justify-between p-4 shadow-md border border-black/10 mx-auto md:mx-0"
@@ -204,18 +204,18 @@ export function BookDetail() {
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-2 flex items-center gap-3">
+              <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3">
                 <Button
                   onClick={() => setIsReserveOpen(true)}
                   disabled={!isAvailable}
-                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs h-9 px-5 cursor-pointer"
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs h-10 sm:h-9 px-5 cursor-pointer justify-center"
                 >
                   <CheckCircle className="w-4 h-4 mr-2" />
                   Reserve This Book
                 </Button>
                 <Link
                   to="/assisted"
-                  className="inline-flex items-center justify-center text-xs font-medium h-9 px-4 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition-colors cursor-pointer"
+                  className="inline-flex items-center justify-center text-xs font-medium h-10 sm:h-9 px-4 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition-colors cursor-pointer"
                 >
                   Issue at Kiosk
                 </Link>
