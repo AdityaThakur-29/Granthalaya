@@ -12,6 +12,7 @@ import {
   Shield,
   User,
   X,
+  Home as HomeIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -27,6 +28,13 @@ export function AppSidebar({
   const navigate = useNavigate();
 
   const userNav = [
+    {
+      name: "Library Overview",
+      to: "/",
+      icon: HomeIcon,
+      badge: "Mumbai",
+      badgeVariant: "blue",
+    },
     {
       name: "Book Catalog",
       to: "/catalog",
@@ -46,6 +54,12 @@ export function AppSidebar({
       name: "Dashboard",
       to: "/dashboard",
       icon: LayoutDashboard,
+      badge: null,
+    },
+    {
+      name: "Public Home Portal",
+      to: "/",
+      icon: HomeIcon,
       badge: null,
     },
     {
@@ -72,7 +86,8 @@ export function AppSidebar({
     {
       name: "Reservation Desk",
       to: "/reservations",
-      icon: pendingReservationsCount > 0 ? pendingReservationsCount : null,
+      icon: CalendarClock,
+      badge: pendingReservationsCount > 0 ? pendingReservationsCount : null,
       badgeVariant: "amber",
     },
     {
@@ -310,11 +325,11 @@ export function AppSidebar({
       {/* Footer Info */}
       <div className="p-4 border-t border-slate-100 bg-slate-50/50">
         <div className="flex items-center justify-between text-xs text-slate-500">
-          <span className="font-medium text-slate-700">Digital Library MVP</span>
-          <span className="text-[10px] text-slate-400 font-mono">v1.0 (IN)</span>
+          <span className="font-medium text-slate-700">Granthalaya · Mumbai</span>
+          <span className="text-[10px] text-slate-400 font-mono">Ward A (Fort)</span>
         </div>
         <p className="text-[11px] text-slate-400 mt-1 leading-snug">
-          Designed for Indian Municipal & District Public Libraries.
+          Municipal Public Library System, Mumbai, Maharashtra.
         </p>
       </div>
     </div>

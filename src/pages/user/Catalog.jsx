@@ -20,15 +20,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useSearchParams } from "react-router-dom";
 import { Search, Filter, BookOpen, Sparkles, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 
 export function Catalog() {
+  const [searchParams] = useSearchParams();
   const [books, setBooks] = useState([]);
   const [members, setMembers] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [availableOnly, setAvailableOnly] = useState(false);
+
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q !== null) {
+      setSearchQuery(q);
+    }
+  }, [searchParams]);
 
   // Reservation Dialog state
   const [reservingBook, setReservingBook] = useState(null);

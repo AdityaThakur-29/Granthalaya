@@ -17,7 +17,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { AppHeader } from "@/components/app-header";
 import { Toaster } from "@/components/ui/sonner";
 
-// Pages
+import { Home } from "@/pages/Home";
 import { Catalog } from "@/pages/user/Catalog";
 import { BookDetail } from "@/pages/user/BookDetail";
 import { MyReservations } from "@/pages/user/MyReservations";
@@ -70,13 +70,9 @@ function AppLayout({ role, onRoleChange, onDataReset, refreshTrigger }) {
         {/* Scrollable Page Body with padding bottom for mobile nav bar */}
         <main className="flex-1 overflow-y-auto pb-16 md:pb-6">
           <Routes>
-            {/* Default Route */}
-            <Route
-              path="/"
-              element={
-                <Navigate to={role === "librarian" ? "/dashboard" : "/catalog"} replace />
-              }
-            />
+            {/* Home Portal */}
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
 
             {/* User / Reader Routes */}
             <Route path="/catalog" element={<Catalog />} />

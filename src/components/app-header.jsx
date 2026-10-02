@@ -32,7 +32,7 @@ export function AppHeader({ role, onDataReset, onRoleToggle, onMenuClick }) {
 
         <div className="flex items-center gap-2 truncate">
           <span className="text-xs sm:text-sm font-bold text-slate-900 truncate">
-            <span className="hidden sm:inline">Central Town Library, Bhopal</span>
+            <span className="hidden sm:inline">Mumbai Central Public Library</span>
             <span className="sm:hidden font-bold">Granthalaya</span>
           </span>
           <span className="text-slate-300 hidden sm:inline">|</span>
@@ -40,7 +40,7 @@ export function AppHeader({ role, onDataReset, onRoleToggle, onMenuClick }) {
             variant="outline"
             className="hidden sm:inline-flex text-[11px] font-normal text-slate-600 bg-slate-50 border-slate-200"
           >
-            Branch: <span className="font-mono font-medium ml-1">MP-BPL-04</span>
+            Branch: <span className="font-mono font-medium ml-1">MH-MUM-01</span>
           </Badge>
         </div>
       </div>

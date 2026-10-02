@@ -7,17 +7,20 @@ import {
   Library,
   Repeat,
   UserCheck,
+  Home as HomeIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function MobileBottomNav({ role, pendingCount = 0 }) {
   const userItems = [
+    { name: "Home", to: "/", icon: HomeIcon },
     { name: "Catalog", to: "/catalog", icon: BookOpen },
     { name: "My Holds", to: "/my-reservations", icon: CalendarClock },
     { name: "Kiosk", to: "/assisted", icon: UserCheck },
   ];
 
   const librarianItems = [
+    { name: "Home", to: "/", icon: HomeIcon },
     { name: "Dashboard", to: "/dashboard", icon: LayoutDashboard },
     { name: "Books", to: "/books", icon: Library },
     { name: "Circulation", to: "/transactions", icon: Repeat },
