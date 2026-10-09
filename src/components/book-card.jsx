@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/status-badge";
-import { BookOpen, ArrowRight } from "lucide-react";
+import { BookOpen, ArrowRight, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function BookCard({ book, onQuickReserve }) {
@@ -31,9 +31,16 @@ export function BookCard({ book, onQuickReserve }) {
           {/* Book Info */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between gap-1 mb-1">
-              <span className="text-[11px] font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
-                {book.category}
-              </span>
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <span className="text-[11px] font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+                  {book.category}
+                </span>
+                {book.pdfUrl && (
+                  <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200">
+                    E-Book
+                  </span>
+                )}
+              </div>
               <StatusBadge
                 status={statusKey}
                 label={isAvailable ? "Available" : "Checked Out"}
@@ -66,13 +73,29 @@ export function BookCard({ book, onQuickReserve }) {
         </div>
       </CardContent>
 
-      <CardFooter className="px-5 py-3 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between gap-2">
-        <Link
-          to={`/catalog/${book.id}`}
-          className="inline-flex items-center text-xs font-medium text-slate-600 hover:text-blue-600 h-8 px-2.5 rounded-lg transition-colors cursor-pointer"
-        >
-          View Details <ArrowRight className="w-3.5 h-3.5 ml-1" />
-        </Link>
+      <CardFooter className="px-5 py-3 bg-slate-50/70 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          <Link
+            to={`/catalog/${book.id}`}
+            className="inline-flex items-center text-xs font-medium text-slate-600 hover:text-blue-600 h-8 px-2 rounded-lg transition-colors cursor-pointer"
+          >
+            View Details <ArrowRight className="w-3.5 h-3.5 ml-1" />
+          </Link>
+
+          {book.pdfUrl && (
+            <a
+              href={book.pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`Read ${book.title} online`}
+              className="inline-flex items-center justify-center gap-1.5 text-xs h-8 px-2.5 rounded-lg border border-emerald-300 text-emerald-700 bg-emerald-50/80 hover:bg-emerald-100 hover:text-emerald-800 transition-colors font-medium cursor-pointer whitespace-nowrap shrink-0"
+            >
+              <BookOpen className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <span>Read Online</span>
+              <ExternalLink className="w-3 h-3 text-emerald-600/80 shrink-0" />
+            </a>
+          )}
+        </div>
 
         {onQuickReserve && (
           <Button
@@ -80,7 +103,7 @@ export function BookCard({ book, onQuickReserve }) {
             variant={isAvailable ? "default" : "outline"}
             disabled={!isAvailable}
             onClick={() => onQuickReserve(book)}
-            className="text-xs h-8 px-3 cursor-pointer"
+            className="text-xs h-8 px-3 cursor-pointer shrink-0"
           >
             {isAvailable ? "Reserve" : "Unavailable"}
           </Button>

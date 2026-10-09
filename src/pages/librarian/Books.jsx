@@ -44,6 +44,7 @@ import {
   Trash2,
   Layers,
   Filter,
+  ExternalLink,
 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { toast } from "sonner";
@@ -87,6 +88,7 @@ export function Books() {
   const [category, setCategory] = useState("Fiction");
   const [totalCopies, setTotalCopies] = useState(3);
   const [coverColor, setCoverColor] = useState(PALETTE[0]);
+  const [pdfUrl, setPdfUrl] = useState("");
 
   // Delete Alert state
   const [deletingId, setDeletingId] = useState(null);
@@ -107,6 +109,7 @@ export function Books() {
     setCategory("Fiction");
     setTotalCopies(3);
     setCoverColor(PALETTE[Math.floor(Math.random() * PALETTE.length)]);
+    setPdfUrl("");
     setIsDialogOpen(true);
   };
 
@@ -118,6 +121,7 @@ export function Books() {
     setCategory(book.category || "Fiction");
     setTotalCopies(book.totalCopies || 1);
     setCoverColor(book.coverColor || PALETTE[0]);
+    setPdfUrl(book.pdfUrl || "");
     setIsDialogOpen(true);
   };
 
@@ -143,6 +147,7 @@ export function Books() {
         totalCopies: numCopies,
         availableCopies: newAvailable,
         coverColor,
+        pdfUrl: pdfUrl.trim() || null,
       });
       toast.success(`Updated "${title}"!`);
     } else {
@@ -153,6 +158,7 @@ export function Books() {
         category,
         totalCopies: numCopies,
         coverColor,
+        pdfUrl: pdfUrl.trim() || null,
       });
       toast.success(`Added "${title}" to library catalog!`);
     }
@@ -284,22 +290,35 @@ export function Books() {
                 const isAvail = b.availableCopies > 0;
                 return (
                   <TableRow key={b.id} className="hover:bg-slate-50/60">
-                    <TableCell className="py-3">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="w-3.5 h-7 rounded-xs shrink-0 shadow-2xs"
-                          style={{ backgroundColor: b.coverColor || "#2563EB" }}
-                        />
-                        <div>
-                          <p className="text-xs font-semibold text-slate-900 line-clamp-1">
-                            {b.title}
-                          </p>
-                          <p className="text-[10px] text-slate-400">
-                            Added: {formatDate(b.addedAt)}
-                          </p>
-                        </div>
-                      </div>
-                    </TableCell>
+                        <TableCell className="py-3">
+                          <div className="flex items-center gap-3">
+                            <div
+                              className="w-3.5 h-7 rounded-xs shrink-0 shadow-2xs"
+                              style={{ backgroundColor: b.coverColor || "#2563EB" }}
+                            />
+                            <div>
+                              <p className="text-xs font-semibold text-slate-900 line-clamp-1">
+                                {b.title}
+                              </p>
+                              <div className="flex items-center gap-2 mt-0.5">
+                                <span className="text-[10px] text-slate-400">
+                                  Added: {formatDate(b.addedAt)}
+                                </span>
+                                {b.pdfUrl && (
+                                  <a
+                                    href={b.pdfUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center text-[10px] font-semibold text-emerald-700 hover:text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200"
+                                    title="Read online copy"
+                                  >
+                                    <BookOpen className="w-2.5 h-2.5 mr-0.5" /> Read Online
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </TableCell>
 
                     <TableCell className="text-xs text-slate-700 py-3 font-medium">
                       {b.author}
@@ -405,6 +424,19 @@ export function Books() {
                   value={isbn}
                   onChange={(e) => setIsbn(e.target.value)}
                   className="h-9 text-xs font-mono"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-slate-700">
+                  E-Book / PDF URL (Read Online)
+                </Label>
+                <Input
+                  type="url"
+                  placeholder="https://... (Direct online PDF link)"
+                  value={pdfUrl}
+                  onChange={(e) => setPdfUrl(e.target.value)}
+                  className="h-9 text-xs"
                 />
               </div>
             </div>

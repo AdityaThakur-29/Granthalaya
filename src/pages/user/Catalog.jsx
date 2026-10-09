@@ -31,6 +31,7 @@ export function Catalog() {
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [availableOnly, setAvailableOnly] = useState(false);
+  const [ebookOnly, setEbookOnly] = useState(false);
 
   useEffect(() => {
     const q = searchParams.get("q");
@@ -70,7 +71,9 @@ export function Catalog() {
 
     const matchesAvailability = availableOnly ? book.availableCopies > 0 : true;
 
-    return matchesSearch && matchesCategory && matchesAvailability;
+    const matchesEbook = ebookOnly ? Boolean(book.pdfUrl) : true;
+
+    return matchesSearch && matchesCategory && matchesAvailability && matchesEbook;
   });
 
   const handleOpenReserve = (book) => {
@@ -160,14 +163,30 @@ export function Catalog() {
             ))}
           </div>
 
-          <Button
-            variant={availableOnly ? "default" : "outline"}
-            size="sm"
-            onClick={() => setAvailableOnly(!availableOnly)}
-            className="text-xs h-9 sm:h-8 border-slate-200 cursor-pointer shrink-0 w-full sm:w-auto"
-          >
-            {availableOnly ? "Showing Available Only" : "Show All Statuses"}
-          </Button>
+          <div className="flex items-center gap-2 shrink-0 flex-wrap sm:flex-nowrap">
+            <Button
+              variant={ebookOnly ? "default" : "outline"}
+              size="sm"
+              onClick={() => setEbookOnly(!ebookOnly)}
+              className={`text-xs h-9 sm:h-8 cursor-pointer shrink-0 w-full sm:w-auto ${
+                ebookOnly
+                  ? "bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-600"
+                  : "border-slate-200 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50/50"
+              }`}
+            >
+              <BookOpen className="w-3.5 h-3.5 mr-1.5" />
+              {ebookOnly ? "E-Books (Read Online) Active" : "Read Online (E-Books)"}
+            </Button>
+
+            <Button
+              variant={availableOnly ? "default" : "outline"}
+              size="sm"
+              onClick={() => setAvailableOnly(!availableOnly)}
+              className="text-xs h-9 sm:h-8 border-slate-200 cursor-pointer shrink-0 w-full sm:w-auto"
+            >
+              {availableOnly ? "Showing Available Only" : "Show All Statuses"}
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -182,6 +201,7 @@ export function Catalog() {
             setSearchQuery("");
             setSelectedCategory("all");
             setAvailableOnly(false);
+            setEbookOnly(false);
           }}
         />
       ) : (

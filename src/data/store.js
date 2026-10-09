@@ -32,10 +32,230 @@ function generateId(prefix) {
 }
 
 // ---------------------
-// Books
+// Color & Seed Data
 // ---------------------
+const COVER_COLORS = [
+  '#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6',
+  '#EC4899', '#06B6D4', '#F97316', '#6366F1', '#14B8A6',
+  '#E11D48', '#7C3AED', '#0EA5E9', '#D946EF', '#84CC16',
+];
+
+const SEED_BOOKS = [
+  {
+    title: 'The Guide',
+    author: 'R.K. Narayan',
+    isbn: '978-0143039648',
+    category: 'Fiction',
+    totalCopies: 3,
+    pdfUrl: 'https://archive.org/details/guide0000unse',
+  },
+  {
+    title: 'Malgudi Days',
+    author: 'R.K. Narayan',
+    isbn: '978-0143039655',
+    category: 'Fiction',
+    totalCopies: 2,
+    pdfUrl: 'https://eruditesdps.wordpress.com/wp-content/uploads/2017/01/malgudi-days-narayan_-r-k_.pdf',
+  },
+  {
+    title: 'Train to Pakistan',
+    author: 'Khushwant Singh',
+    isbn: '978-0143065883',
+    category: 'Fiction',
+    totalCopies: 2,
+    pdfUrl: 'https://www.ssgopalganj.in/online/E-Books/CLASS%20XI/Train%20to%20Pakistan%20by%20Khuswant%20Singh.pdf',
+  },
+  {
+    title: 'The White Tiger',
+    author: 'Aravind Adiga',
+    isbn: '978-1416562603',
+    category: 'Fiction',
+    totalCopies: 3,
+    pdfUrl: 'https://www.ssgopalganj.in/online/E-Books/CLASS%20XI/The%20White%20Tiger%20by%20Arvind%20Adiga.pdf',
+  },
+  {
+    title: 'A Suitable Boy',
+    author: 'Vikram Seth',
+    isbn: '978-0060786526',
+    category: 'Fiction',
+    totalCopies: 1,
+    pdfUrl: 'https://www.ssgopalganj.in/online/E-Books/CLASS%20IX/A%20Suitable%20Boy%20Vikram%20Seth.pdf',
+  },
+  {
+    title: 'The God of Small Things',
+    author: 'Arundhati Roy',
+    isbn: '978-0812979657',
+    category: 'Fiction',
+    totalCopies: 2,
+  },
+  {
+    title: 'Wings of Fire',
+    author: 'A.P.J. Abdul Kalam',
+    isbn: '978-8173711466',
+    category: 'Biography',
+    totalCopies: 4,
+    pdfUrl: 'https://crpf.gov.in/writereaddata/images/pdf/Wings_of_Fire.pdf',
+  },
+  {
+    title: 'Discovery of India',
+    author: 'Jawaharlal Nehru',
+    isbn: '978-0143031031',
+    category: 'History',
+    totalCopies: 2,
+    pdfUrl: 'https://archive.org/details/TheDiscoveryOfIndia-Eng-JawaharlalNehru',
+  },
+  {
+    title: 'Gitanjali',
+    author: 'Rabindranath Tagore',
+    isbn: '978-1420933444',
+    category: 'Poetry',
+    totalCopies: 3,
+    pdfUrl: 'https://crpf.gov.in/writereaddata/images/pdf/Gitanjali.pdf',
+  },
+  {
+    title: 'The Immortals of Meluha',
+    author: 'Amish Tripathi',
+    isbn: '978-9380658742',
+    category: 'Mythology',
+    totalCopies: 5,
+  },
+  {
+    title: 'Five Point Someone',
+    author: 'Chetan Bhagat',
+    isbn: '978-8129135476',
+    category: 'Fiction',
+    totalCopies: 4,
+  },
+  {
+    title: 'Godan',
+    author: 'Munshi Premchand',
+    isbn: '978-8171676088',
+    category: 'Classic',
+    totalCopies: 2,
+    pdfUrl: 'https://crpf.gov.in/writereaddata/images/pdf/Godan.pdf',
+  },
+  {
+    title: 'My Experiments with Truth',
+    author: 'Mahatma Gandhi',
+    isbn: '978-0486245935',
+    category: 'Biography',
+    totalCopies: 3,
+    pdfUrl: 'https://www.ssgopalganj.in/online/E-Books/CLASS%20XI/The%20Story%20of%20My%20Experiments%20with%20Truth%20by%20Mahatma%20Gandhi.pdf',
+  },
+  {
+    title: 'The Algebra of Infinite Justice',
+    author: 'Arundhati Roy',
+    isbn: '978-0143029076',
+    category: 'Non-Fiction',
+    totalCopies: 1,
+  },
+  {
+    title: 'Ignited Minds',
+    author: 'A.P.J. Abdul Kalam',
+    isbn: '978-0143029571',
+    category: 'Non-Fiction',
+    totalCopies: 3,
+    pdfUrl: 'https://crpf.gov.in/writereaddata/images/pdf/Ignited_Minds.pdf',
+  },
+  {
+    title: 'The Blue Umbrella',
+    author: 'Ruskin Bond',
+    isbn: '978-8171673407',
+    category: 'Fiction',
+    totalCopies: 3,
+    pdfUrl: 'https://www.ssgopalganj.in/online/E-Books/CLASS%20VII/The%20Blue%20Umbrella%20by%20Ruskin%20Bond.pdf',
+  },
+  {
+    title: 'Untouchable',
+    author: 'Mulk Raj Anand',
+    isbn: '978-0140183955',
+    category: 'Fiction',
+    totalCopies: 3,
+    pdfUrl: 'https://www.ssgopalganj.in/online/E-Books/CLASS%20X/UNTOUCHABLE%20BY%20MULK%20RAJ%20ANAND.pdf',
+  },
+  {
+    title: 'The Coolie',
+    author: 'Mulk Raj Anand',
+    isbn: '978-0140186802',
+    category: 'Fiction',
+    totalCopies: 2,
+    pdfUrl: 'https://www.ssgopalganj.in/online/E-Books/CLASS%20XII/THE%20COOLIE%20BY%20MULK%20RAJ%20ANAND.pdf',
+  },
+  {
+    title: 'The Namesake',
+    author: 'Jhumpa Lahiri',
+    isbn: '978-0618485222',
+    category: 'Fiction',
+    totalCopies: 3,
+    pdfUrl: 'https://www.ssgopalganj.in/online/E-Books/CLASS%20XII/THE%20NAMESAKE%20BY%20JHUMPA%20LAHIRI.pdf',
+  },
+  {
+    title: 'Wise and Otherwise',
+    author: 'Sudha Murty',
+    isbn: '978-0143062226',
+    category: 'Non-Fiction',
+    totalCopies: 3,
+    pdfUrl: 'https://www.ssgopalganj.in/online/E-Books/CLASS%20IX/WISE%20AND%20OTHER%20WISE%20BY%20SUDHA%20MURTY.pdf',
+  },
+];
+
+// ---------------------
+// Books & Online Reading Resources
+// ---------------------
+export const KNOWN_BOOK_PDFS = {
+  'Malgudi Days': 'https://eruditesdps.wordpress.com/wp-content/uploads/2017/01/malgudi-days-narayan_-r-k_.pdf',
+  'Gitanjali': 'https://crpf.gov.in/writereaddata/images/pdf/Gitanjali.pdf',
+  'A Suitable Boy': 'https://www.ssgopalganj.in/online/E-Books/CLASS%20IX/A%20Suitable%20Boy%20Vikram%20Seth.pdf',
+  'Wings of Fire': 'https://crpf.gov.in/writereaddata/images/pdf/Wings_of_Fire.pdf',
+  'Train to Pakistan': 'https://www.ssgopalganj.in/online/E-Books/CLASS%20XI/Train%20to%20Pakistan%20by%20Khuswant%20Singh.pdf',
+  'The White Tiger': 'https://www.ssgopalganj.in/online/E-Books/CLASS%20XI/The%20White%20Tiger%20by%20Arvind%20Adiga.pdf',
+  'My Experiments with Truth': 'https://www.ssgopalganj.in/online/E-Books/CLASS%20XI/The%20Story%20of%20My%20Experiments%20with%20Truth%20by%20Mahatma%20Gandhi.pdf',
+  'Ignited Minds': 'https://crpf.gov.in/writereaddata/images/pdf/Ignited_Minds.pdf',
+  'Godan': 'https://crpf.gov.in/writereaddata/images/pdf/Godan.pdf',
+  'The Guide': 'https://archive.org/details/guide0000unse',
+  'Discovery of India': 'https://archive.org/details/TheDiscoveryOfIndia-Eng-JawaharlalNehru',
+  'The Blue Umbrella': 'https://www.ssgopalganj.in/online/E-Books/CLASS%20VII/The%20Blue%20Umbrella%20by%20Ruskin%20Bond.pdf',
+  'Untouchable': 'https://www.ssgopalganj.in/online/E-Books/CLASS%20X/UNTOUCHABLE%20BY%20MULK%20RAJ%20ANAND.pdf',
+  'The Coolie': 'https://www.ssgopalganj.in/online/E-Books/CLASS%20XII/THE%20COOLIE%20BY%20MULK%20RAJ%20ANAND.pdf',
+  'The Namesake': 'https://www.ssgopalganj.in/online/E-Books/CLASS%20XII/THE%20NAMESAKE%20BY%20JHUMPA%20LAHIRI.pdf',
+  'Wise and Otherwise': 'https://www.ssgopalganj.in/online/E-Books/CLASS%20IX/WISE%20AND%20OTHER%20WISE%20BY%20SUDHA%20MURTY.pdf',
+};
+
 export function getBooks() {
-  return read(STORAGE_KEYS.books);
+  const books = read(STORAGE_KEYS.books);
+  if (!books || books.length === 0) return [];
+
+  let needsSync = false;
+  // 1. Auto-sync known online reading PDF links if missing in existing stored books
+  const enriched = books.map((b) => {
+    if (!b.pdfUrl && KNOWN_BOOK_PDFS[b.title]) {
+      needsSync = true;
+      return { ...b, pdfUrl: KNOWN_BOOK_PDFS[b.title] };
+    }
+    return b;
+  });
+
+  // 2. Add any newly added SEED_BOOKS if not present yet in local storage
+  if (typeof SEED_BOOKS !== 'undefined') {
+    SEED_BOOKS.forEach((seedBook, i) => {
+      if (!enriched.some((b) => b.title.toLowerCase() === seedBook.title.toLowerCase())) {
+        needsSync = true;
+        enriched.push({
+          ...seedBook,
+          id: `book_${String(enriched.length + 1).padStart(3, '0')}`,
+          availableCopies: seedBook.totalCopies,
+          coverColor: COVER_COLORS[enriched.length % COVER_COLORS.length],
+          addedAt: new Date(2026, 8, 15 + i).toISOString(),
+        });
+      }
+    });
+  }
+
+  if (needsSync) {
+    write(STORAGE_KEYS.books, enriched);
+  }
+
+  return enriched;
 }
 
 export function getBookById(id) {
@@ -49,6 +269,7 @@ export function addBook(book) {
     id: generateId('book'),
     availableCopies: book.totalCopies,
     addedAt: new Date().toISOString(),
+    pdfUrl: book.pdfUrl || KNOWN_BOOK_PDFS[book.title] || null,
   };
   books.push(newBook);
   write(STORAGE_KEYS.books, books);
@@ -212,29 +433,7 @@ export function setRole(role) {
 // ---------------------
 // Seed data
 // ---------------------
-const COVER_COLORS = [
-  '#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6',
-  '#EC4899', '#06B6D4', '#F97316', '#6366F1', '#14B8A6',
-  '#E11D48', '#7C3AED', '#0EA5E9', '#D946EF', '#84CC16',
-];
-
-const SEED_BOOKS = [
-  { title: 'The Guide', author: 'R.K. Narayan', isbn: '978-0143039648', category: 'Fiction', totalCopies: 3 },
-  { title: 'Malgudi Days', author: 'R.K. Narayan', isbn: '978-0143039655', category: 'Fiction', totalCopies: 2 },
-  { title: 'Train to Pakistan', author: 'Khushwant Singh', isbn: '978-0143065883', category: 'Fiction', totalCopies: 2 },
-  { title: 'The White Tiger', author: 'Aravind Adiga', isbn: '978-1416562603', category: 'Fiction', totalCopies: 3 },
-  { title: 'A Suitable Boy', author: 'Vikram Seth', isbn: '978-0060786526', category: 'Fiction', totalCopies: 1 },
-  { title: 'The God of Small Things', author: 'Arundhati Roy', isbn: '978-0812979657', category: 'Fiction', totalCopies: 2 },
-  { title: 'Wings of Fire', author: 'A.P.J. Abdul Kalam', isbn: '978-8173711466', category: 'Biography', totalCopies: 4 },
-  { title: 'Discovery of India', author: 'Jawaharlal Nehru', isbn: '978-0143031031', category: 'History', totalCopies: 2 },
-  { title: 'Gitanjali', author: 'Rabindranath Tagore', isbn: '978-1420933444', category: 'Poetry', totalCopies: 3 },
-  { title: 'The Immortals of Meluha', author: 'Amish Tripathi', isbn: '978-9380658742', category: 'Mythology', totalCopies: 5 },
-  { title: 'Five Point Someone', author: 'Chetan Bhagat', isbn: '978-8129135476', category: 'Fiction', totalCopies: 4 },
-  { title: 'Godan', author: 'Munshi Premchand', isbn: '978-8171676088', category: 'Classic', totalCopies: 2 },
-  { title: 'My Experiments with Truth', author: 'Mahatma Gandhi', isbn: '978-0486245935', category: 'Biography', totalCopies: 3 },
-  { title: 'The Algebra of Infinite Justice', author: 'Arundhati Roy', isbn: '978-0143029076', category: 'Non-Fiction', totalCopies: 1 },
-  { title: 'Ignited Minds', author: 'A.P.J. Abdul Kalam', isbn: '978-0143029571', category: 'Non-Fiction', totalCopies: 3 },
-];
+// (COVER_COLORS and SEED_BOOKS defined at top)
 
 const SEED_MEMBERS = [
   { name: 'Aarav Sharma', email: 'aarav.sharma@gmail.com', phone: '+91 98765 43210' },
