@@ -89,6 +89,7 @@ export function Books() {
   const [totalCopies, setTotalCopies] = useState(3);
   const [coverColor, setCoverColor] = useState(PALETTE[0]);
   const [pdfUrl, setPdfUrl] = useState("");
+  const [coverImage, setCoverImage] = useState("");
 
   // Delete Alert state
   const [deletingId, setDeletingId] = useState(null);
@@ -110,6 +111,7 @@ export function Books() {
     setTotalCopies(3);
     setCoverColor(PALETTE[Math.floor(Math.random() * PALETTE.length)]);
     setPdfUrl("");
+    setCoverImage("");
     setIsDialogOpen(true);
   };
 
@@ -122,6 +124,7 @@ export function Books() {
     setTotalCopies(book.totalCopies || 1);
     setCoverColor(book.coverColor || PALETTE[0]);
     setPdfUrl(book.pdfUrl || "");
+    setCoverImage(book.coverImage || "");
     setIsDialogOpen(true);
   };
 
@@ -148,6 +151,7 @@ export function Books() {
         availableCopies: newAvailable,
         coverColor,
         pdfUrl: pdfUrl.trim() || null,
+        coverImage: coverImage.trim() || undefined,
       });
       toast.success(`Updated "${title}"!`);
     } else {
@@ -159,6 +163,7 @@ export function Books() {
         totalCopies: numCopies,
         coverColor,
         pdfUrl: pdfUrl.trim() || null,
+        coverImage: coverImage.trim() || undefined,
       });
       toast.success(`Added "${title}" to library catalog!`);
     }
@@ -292,10 +297,30 @@ export function Books() {
                   <TableRow key={b.id} className="hover:bg-slate-50/60">
                         <TableCell className="py-3">
                           <div className="flex items-center gap-3">
-                            <div
-                              className="w-3.5 h-7 rounded-xs shrink-0 shadow-2xs"
-                              style={{ backgroundColor: b.coverColor || "#2563EB" }}
-                            />
+                            <div className="relative w-8 h-11 rounded-xs overflow-hidden shrink-0 shadow-2xs border border-slate-200 bg-slate-100 flex items-center justify-center">
+                              {b.coverImage ? (
+                                <>
+                                  <img
+                                    src={b.coverImage}
+                                    alt=""
+                                    className="w-full h-full object-cover"
+                                    onError={(e) => {
+                                      e.currentTarget.style.display = "none";
+                                      e.currentTarget.nextElementSibling?.classList.remove("hidden");
+                                    }}
+                                  />
+                                  <div
+                                    className="hidden absolute inset-0 w-full h-full"
+                                    style={{ backgroundColor: b.coverColor || "#2563EB" }}
+                                  />
+                                </>
+                              ) : (
+                                <div
+                                  className="w-full h-full"
+                                  style={{ backgroundColor: b.coverColor || "#2563EB" }}
+                                />
+                              )}
+                            </div>
                             <div>
                               <p className="text-xs font-semibold text-slate-900 line-clamp-1">
                                 {b.title}
@@ -436,6 +461,19 @@ export function Books() {
                   placeholder="https://... (Direct online PDF link)"
                   value={pdfUrl}
                   onChange={(e) => setPdfUrl(e.target.value)}
+                  className="h-9 text-xs"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label className="text-xs font-medium text-slate-700">
+                  Cover Image URL (Optional)
+                </Label>
+                <Input
+                  type="url"
+                  placeholder="https://... (Leave blank to auto-detect)"
+                  value={coverImage}
+                  onChange={(e) => setCoverImage(e.target.value)}
                   className="h-9 text-xs"
                 />
               </div>

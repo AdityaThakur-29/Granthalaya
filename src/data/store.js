@@ -200,8 +200,31 @@ const SEED_BOOKS = [
 ];
 
 // ---------------------
-// Books & Online Reading Resources
+// Books, Covers & Online Reading Resources
 // ---------------------
+export const KNOWN_BOOK_COVERS = {
+  'The Guide': 'https://covers.openlibrary.org/b/isbn/9780143039648-M.jpg',
+  'Malgudi Days': 'https://covers.openlibrary.org/b/isbn/9780143039655-M.jpg',
+  'Train to Pakistan': 'https://covers.openlibrary.org/b/isbn/9780143065883-M.jpg',
+  'The White Tiger': 'https://covers.openlibrary.org/b/isbn/9781416562603-M.jpg',
+  'A Suitable Boy': 'https://covers.openlibrary.org/b/isbn/9780060786526-M.jpg',
+  'The God of Small Things': 'https://covers.openlibrary.org/b/isbn/9780812979657-M.jpg',
+  'Wings of Fire': 'https://covers.openlibrary.org/b/isbn/9788173711466-M.jpg',
+  'Discovery of India': 'https://covers.openlibrary.org/b/isbn/9780143031031-M.jpg',
+  'Gitanjali': 'https://covers.openlibrary.org/b/isbn/9780140188547-M.jpg',
+  'The Immortals of Meluha': 'https://covers.openlibrary.org/b/isbn/9789380658742-M.jpg',
+  'Five Point Someone': 'https://covers.openlibrary.org/b/isbn/9788129104595-M.jpg',
+  'Godan': 'https://covers.openlibrary.org/b/isbn/9780253205018-M.jpg',
+  'My Experiments with Truth': 'https://covers.openlibrary.org/b/isbn/9780486245935-M.jpg',
+  'The Algebra of Infinite Justice': 'https://covers.openlibrary.org/b/isbn/9780007149490-M.jpg',
+  'Ignited Minds': 'https://covers.openlibrary.org/b/isbn/9780143029571-M.jpg',
+  'The Blue Umbrella': 'https://covers.openlibrary.org/b/isbn/9788171673407-M.jpg',
+  'Untouchable': 'https://covers.openlibrary.org/b/isbn/9780140183955-M.jpg',
+  'The Coolie': 'https://covers.openlibrary.org/b/isbn/9780140186802-M.jpg',
+  'The Namesake': 'https://covers.openlibrary.org/b/isbn/9780618485222-M.jpg',
+  'Wise and Otherwise': 'https://covers.openlibrary.org/b/isbn/9780143062226-M.jpg',
+};
+
 export const KNOWN_BOOK_PDFS = {
   'Malgudi Days': 'https://eruditesdps.wordpress.com/wp-content/uploads/2017/01/malgudi-days-narayan_-r-k_.pdf',
   'Gitanjali': 'https://crpf.gov.in/writereaddata/images/pdf/Gitanjali.pdf',
@@ -226,13 +249,20 @@ export function getBooks() {
   if (!books || books.length === 0) return [];
 
   let needsSync = false;
-  // 1. Auto-sync known online reading PDF links if missing in existing stored books
+  // 1. Auto-sync known online reading PDF links and cover images if missing
   const enriched = books.map((b) => {
-    if (!b.pdfUrl && KNOWN_BOOK_PDFS[b.title]) {
+    let updated = b;
+    if (!updated.pdfUrl && KNOWN_BOOK_PDFS[updated.title]) {
       needsSync = true;
-      return { ...b, pdfUrl: KNOWN_BOOK_PDFS[b.title] };
+      updated = { ...updated, pdfUrl: KNOWN_BOOK_PDFS[updated.title] };
     }
-    return b;
+    if (!updated.coverImage && (KNOWN_BOOK_COVERS[updated.title] || updated.isbn)) {
+      needsSync = true;
+      const cleanIsbn = updated.isbn ? updated.isbn.replace(/-/g, '') : '';
+      const cover = KNOWN_BOOK_COVERS[updated.title] || (cleanIsbn ? `https://covers.openlibrary.org/b/isbn/${cleanIsbn}-M.jpg` : null);
+      updated = { ...updated, coverImage: cover };
+    }
+    return updated;
   });
 
   // 2. Add any newly added SEED_BOOKS if not present yet in local storage
@@ -240,11 +270,14 @@ export function getBooks() {
     SEED_BOOKS.forEach((seedBook, i) => {
       if (!enriched.some((b) => b.title.toLowerCase() === seedBook.title.toLowerCase())) {
         needsSync = true;
+        const cleanIsbn = seedBook.isbn ? seedBook.isbn.replace(/-/g, '') : '';
+        const cover = KNOWN_BOOK_COVERS[seedBook.title] || (cleanIsbn ? `https://covers.openlibrary.org/b/isbn/${cleanIsbn}-M.jpg` : null);
         enriched.push({
           ...seedBook,
           id: `book_${String(enriched.length + 1).padStart(3, '0')}`,
           availableCopies: seedBook.totalCopies,
           coverColor: COVER_COLORS[enriched.length % COVER_COLORS.length],
+          coverImage: seedBook.coverImage || cover,
           addedAt: new Date(2026, 8, 15 + i).toISOString(),
         });
       }
@@ -264,12 +297,15 @@ export function getBookById(id) {
 
 export function addBook(book) {
   const books = getBooks();
+  const cleanIsbn = book.isbn ? book.isbn.replace(/-/g, '') : '';
+  const cover = book.coverImage || KNOWN_BOOK_COVERS[book.title] || (cleanIsbn ? `https://covers.openlibrary.org/b/isbn/${cleanIsbn}-M.jpg` : null);
   const newBook = {
     ...book,
     id: generateId('book'),
     availableCopies: book.totalCopies,
     addedAt: new Date().toISOString(),
     pdfUrl: book.pdfUrl || KNOWN_BOOK_PDFS[book.title] || null,
+    coverImage: cover,
   };
   books.push(newBook);
   write(STORAGE_KEYS.books, books);

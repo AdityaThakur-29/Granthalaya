@@ -40,7 +40,7 @@ import {
   ExternalLink,
   Sparkles,
 } from "lucide-react";
-import { formatDate } from "@/lib/utils";
+import { formatDate, cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 export function BookDetail() {
@@ -123,20 +123,40 @@ export function BookDetail() {
       <Card className="border border-slate-200/90 bg-white shadow-xs overflow-hidden">
         <CardContent className="p-5 sm:p-8">
           <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-center sm:items-start">
-            {/* Spine representation */}
-            <div
-              className="w-36 h-52 rounded-xl shrink-0 flex flex-col justify-between p-4 shadow-md border border-black/10 mx-auto md:mx-0"
-              style={{ backgroundColor: book.coverColor || "#2563EB" }}
-            >
-              <div className="w-full h-1.5 bg-white/40 rounded-full" />
-              <div className="text-center space-y-2">
-                <BookOpen className="w-8 h-8 text-white/90 mx-auto" />
-                <p className="text-[10px] font-bold uppercase tracking-wider text-white/90">
-                  {book.category}
-                </p>
-              </div>
-              <div className="text-[9px] text-white/70 font-mono text-center">
-                GRANTHALAYA
+            {/* Book Cover Image with Spine Fallback */}
+            <div className="w-36 h-52 sm:w-40 sm:h-56 rounded-xl shrink-0 overflow-hidden shadow-md border border-slate-200/90 bg-slate-100 mx-auto md:mx-0 relative">
+              {book.coverImage && (
+                <img
+                  src={book.coverImage.replace("-M.jpg", "-L.jpg")}
+                  alt={book.title}
+                  className="w-full h-full object-cover rounded-xl"
+                  onError={(e) => {
+                    if (e.currentTarget.src.includes("-L.jpg")) {
+                      e.currentTarget.src = book.coverImage;
+                    } else {
+                      e.currentTarget.style.display = "none";
+                      e.currentTarget.nextElementSibling?.classList.remove("hidden");
+                    }
+                  }}
+                />
+              )}
+              <div
+                className={cn(
+                  "w-full h-full flex flex-col justify-between p-4 rounded-xl border border-black/10",
+                  book.coverImage ? "hidden" : "flex"
+                )}
+                style={{ backgroundColor: book.coverColor || "#2563EB" }}
+              >
+                <div className="w-full h-1.5 bg-white/40 rounded-full" />
+                <div className="text-center space-y-2">
+                  <BookOpen className="w-8 h-8 text-white/90 mx-auto" />
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-white/90">
+                    {book.category}
+                  </p>
+                </div>
+                <div className="text-[9px] text-white/70 font-mono text-center">
+                  GRANTHALAYA
+                </div>
               </div>
             </div>
 

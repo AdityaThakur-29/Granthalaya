@@ -14,18 +14,35 @@ export function BookCard({ book, onQuickReserve }) {
     <Card className="flex flex-col justify-between border border-slate-200/90 bg-white hover:border-blue-300 hover:shadow-md transition-all duration-200 overflow-hidden group">
       <CardContent className="p-5">
         <div className="flex items-start gap-4">
-          {/* Custom Book Cover Spine */}
-          <div
-            className="w-14 h-20 rounded-md shrink-0 flex flex-col justify-between p-2 shadow-xs border border-black/10 group-hover:scale-102 transition-transform"
-            style={{
-              backgroundColor: book.coverColor || "#2563EB",
-            }}
-          >
-            <div className="w-full h-1 bg-white/40 rounded-full" />
-            <BookOpen className="w-5 h-5 text-white/90 mx-auto" />
-            <span className="text-[9px] font-bold text-white/90 uppercase tracking-tighter truncate text-center">
-              {book.category?.slice(0, 3) || "LIB"}
-            </span>
+          {/* Book Cover Image with Spine Fallback */}
+          <div className="w-16 h-24 rounded-lg shrink-0 overflow-hidden shadow-xs border border-slate-200/90 bg-slate-100 group-hover:scale-102 transition-transform relative">
+            {book.coverImage && (
+              <img
+                src={book.coverImage}
+                alt={book.title}
+                className="w-full h-full object-cover rounded-lg"
+                loading="lazy"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                  e.currentTarget.nextElementSibling?.classList.remove("hidden");
+                }}
+              />
+            )}
+            <div
+              className={cn(
+                "w-full h-full flex flex-col justify-between p-2 rounded-lg",
+                book.coverImage ? "hidden" : "flex"
+              )}
+              style={{
+                backgroundColor: book.coverColor || "#2563EB",
+              }}
+            >
+              <div className="w-full h-1 bg-white/40 rounded-full" />
+              <BookOpen className="w-5 h-5 text-white/90 mx-auto" />
+              <span className="text-[9px] font-bold text-white/90 uppercase tracking-tighter truncate text-center">
+                {book.category?.slice(0, 3) || "LIB"}
+              </span>
+            </div>
           </div>
 
           {/* Book Info */}
